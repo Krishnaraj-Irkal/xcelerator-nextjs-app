@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Xcelerator – Simple Auth Starter (Next.js + Neon + Drizzle + Better Auth)
 
-## Getting Started
+---
 
-First, run the development server:
+## 🚀 Tech Used
+
+- **Next.js App Router**
+- **Neon PostgreSQL**
+- **Drizzle ORM**  
+  (I also used Drizzle to run all database migrations)
+- **Better Auth** (email/password login)
+- **Tailwind CSS v4 + shadcn/ui**
+
+Additional notes:
+- The **database schema** was written with help from **Claude AI**
+- The **authentication pages** (`signup`, `signin`, `dashboard`) were created with help from **ChatGPT**
+
+---
+
+## 📁 Project Structure
+
+- page.tsx # Home page
+- signup/ # Sign Up page (created using ChatGPT)
+- signin/ # Sign In page (created using ChatGPT)
+- dashboard/ # Protected session-only page
+- api/auth/[...all]/ # Better Auth API handler
+
+- lib/
+- auth.ts # Better Auth server setup
+- auth-client.ts # signIn, signUp, signOut, useSession helpers
+- db/
+- schema.ts # Schema (created using Claude AI)
+- index.ts # Drizzle + Neon configuration
+
+- drizzle/
+- ...migration files generated through Drizzle
+
+---
+
+## 🛠️ Getting Started
+
+Install dependencies:
 
 ```bash
+npm install
+```
+Start the dev server:
+```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit the app at:
+```bash
+http://localhost:3000
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Production mode:
+```bash
+npm run build
+npm run start
+```
+🔑 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a .env.local file in the root directory:
+```bash
+DATABASE_URL="postgresql://user:password@your-neon-url/db?sslmode=require"
+BETTER_AUTH_SECRET="your-secret-key"
+BETTER_AUTH_URL="http://localhost:3000"
+NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000"
+```
 
-## Learn More
+Make sure to keep secrets out of version control.
+```bash
+🗄️ Database & Migrations (Drizzle)
+```
+I used Drizzle ORM for all schema and migration tasks.
 
-To learn more about Next.js, take a look at the following resources:
+Generate migration files:
+```bash
+npx drizzle-kit generate
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Push migrations to your Neon database:
+```bash
+npx drizzle-kit push
+```
+Schema file (schema.ts) was written with help from Claude AI.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🔐 How Authentication Works
 
-## Deploy on Vercel
+- auth.ts sets up Better Auth and connects it to Drizzle.
+- app/api/auth/[...all] exposes all auth-related endpoints.
+- auth-client.ts includes signIn, signUp, signOut, and useSession.
+- The UI pages for signup, signin, and the dashboard were built using ChatGPT, connecting directly to these helpers.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
